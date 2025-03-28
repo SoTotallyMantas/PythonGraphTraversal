@@ -4,16 +4,15 @@ import matplotlib.pyplot as plt
 import collections
 from collections import deque
 import matplotlib.patches as mpatches
+# Sugeneruojamas grafas
 def generate_graph():
     
     seed = randint(1,5000)
     Graph = nx.erdos_renyi_graph(20,0.2,seed)
-    # print("Nodes", Graph.nodes(data=True))
-    # print("Edges", Graph.edges(data=True))
     Graph.nodes
     return Graph
    
-
+#  funkcija nupiesti galutini rezultata
 def draw_final_result(Graph, bfs_path, dfs_path, ax, graph_title):
     pos = nx.shell_layout(Graph)
 
@@ -25,18 +24,18 @@ def draw_final_result(Graph, bfs_path, dfs_path, ax, graph_title):
 
    
    
-
+    # nubraizomas bfs kelias
     if bfs_path:
         bfs_edges = [(bfs_path[i], bfs_path[i + 1]) for i in range(len(bfs_path) - 1)]
         nx.draw_networkx_edges(Graph, pos, edgelist=bfs_edges, ax=ax, edge_color='blue', width=2)
         nx.draw_networkx_nodes(Graph, pos, nodelist=bfs_path, ax=ax, node_color='blue', node_size=600)
 
-   
+   # nubraizomas dfs kelias
     if dfs_path:
         dfs_edges = [(dfs_path[i], dfs_path[i + 1]) for i in range(len(dfs_path) - 1)]
         nx.draw_networkx_edges(Graph, pos, edgelist=dfs_edges, ax=ax, edge_color='green', width=2)
         nx.draw_networkx_nodes(Graph, pos, nodelist=dfs_path, ax=ax, node_color='green', node_size=600)
-
+    # nubraizomi bendri kmazgai
     if common_nodes:
         nx.draw_networkx_nodes(Graph, pos, nodelist=common_nodes, ax=ax, node_color='orange', node_size=600)
 
@@ -47,7 +46,7 @@ def draw_final_result(Graph, bfs_path, dfs_path, ax, graph_title):
     ax.set_title(graph_title, loc='left')
 
 
-
+# BFs paieska
 def bfs(graph, start,target):
 
     
@@ -76,7 +75,7 @@ def bfs(graph, start,target):
     
     
     return None, visited_count
-
+ # dfs paieka
 def dfs(graph, start, target):
     
     stack = [(start, [start])]
@@ -100,7 +99,7 @@ def dfs(graph, start, target):
                 stack.append((neighbor, path + [neighbor]))  
 
     return None, visited_count
-
+# Pagrindine funkcija
 def main():
  
    fig, axs = plt.subplots(1, 3, figsize=(18, 8))
@@ -109,7 +108,7 @@ def main():
    dfs_paths = []
    dfs_counts = []
    bfs_counts = []
-
+    # triju grafu generavimas ir rezultatai
    for i in range(3):
 
     graph = generate_graph()
@@ -123,7 +122,7 @@ def main():
 
     print("DFS Results")
     print(dfs_path,f"Count: {DFS_Results}")
-
+    # rezultatu saugojimas
     bfs_paths.append(bfs_path)
     dfs_paths.append(dfs_path)
     bfs_counts.append(BFS_Results)
@@ -156,7 +155,7 @@ def main():
    ax_table.yaxis.set_visible(False)
      
    table = ax_table.table(cellText=table_data, cellLoc='center', bbox=[0, -0.4, 1, 0.3]) 
-
+    # lenteles vizualizacija
    table.auto_set_font_size(False)
    table.set_fontsize(10)
    table.scale(1.2, 1.2) 
